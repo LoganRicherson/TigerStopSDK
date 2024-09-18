@@ -1,25 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Targeting .NET 8.0 for cross-platform support -->
     <TargetFramework>net8.0</TargetFramework>
+
+    <!-- Title and product information -->
     <AssemblyTitle>TigerStopAPI</AssemblyTitle>
     <Product>TigerStopAPI</Product>
     <Copyright>Copyright © 2016</Copyright>
+
+    <!-- Output directory configuration -->
     <OutputPath>bin\$(Configuration)\</OutputPath>
+
+    <!-- Targeting ARM architecture (Change to linux-arm for 32-bit) -->
+    <!-- For Raspberry Pi or ARM Linux 64-bit OS, use linux-arm64 -->
+    <RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
+
+    <!-- Optional: Make the app self-contained to include the .NET runtime -->
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>false</PublishTrimmed> <!-- Trim unused libraries for smaller size -->
   </PropertyGroup>
 
+  <!-- Debug build configuration -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
     <DocumentationFile>bin\$(Configuration)\TigerStopAPI.XML</DocumentationFile>
   </PropertyGroup>
 
+  <!-- Release build configuration -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
+  <!-- NuGet package references -->
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
+
+  <!-- Optional: If you want to clean up the bin and obj directories when switching architectures -->
+  <Target Name="CleanBuildArtifacts" BeforeTargets="Build">
+    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+    <RemoveDir Directories="$(BaseOutputPath)" />
+  </Target>
 
 </Project>
